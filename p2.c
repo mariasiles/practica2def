@@ -59,7 +59,7 @@ float Scalar( float vect1[N], float vect2[N] ){
 		
 		resultat+= vect1[i] * vect2[i];
 	}
-	printf("%f",resultat);
+	
 	return resultat;
 }
 
@@ -69,14 +69,14 @@ float Magnitude( float vect[N] ){
 	for (i=0; i<N; i++){
 		result+=vect[i]*vect[i];
 	}
-	printf("%f",sqrt(result));
+	
 	return sqrt(result);
 } 
 
 
 
 int Ortogonal( float vect1[N], float vect2[N] ){
-	printf("%f",Scalar(vect1,vect2));
+	
 	return (Scalar(vect1,vect2) == 0);
 }
 void Projection( float vect1[N], float vect2[N], float vectres[N] ){
@@ -96,7 +96,7 @@ float Infininorm( float M[N][N] ){
 			maxsum=sumaFila;
 		}
 	}
-	printf("%f",maxsum);
+	
 	return maxsum;
 }
 float Onenorm( float M[N][N] ){
@@ -110,7 +110,7 @@ float Onenorm( float M[N][N] ){
 			maxsum=sumaColumna;
 		}
 	}
-	printf("%f",maxsum);
+	
 	return maxsum;
 }
 
@@ -122,22 +122,134 @@ float NormFrobenius( float M[N][N] ){
 		}
 	}
 	float frobenius=sqrt(suma);
-	printf("%f",frobenius);
+	
 	return frobenius;
 }
 
 
 
 
+int DiagonalDom( float M[N][N] ){
+	for (int i=0; i<N; i++){
+		float diagonal = fabs(M[i][i]);
+	        float sumaFila = 0.0;
+		
+		for (int j=0; j<N; j++){
+			if (j!=i){
+				sumaFila+= fabs(M[i][j]);
+			}
+		}
+		if (diagonal < sumaFila){
+			return 0;
+		}
+	}
+		return 1;
+}
+int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned iter ){
+	float temp[N];
+	unsigned k;
+	for (k=0; k< iter;k++){
+		for (int i = 0; i < N; i++) {
+			temp[i]=vect[i];
+
+			for (int j=0; j<N; j++){
+				if (j!=i){
+               			temp[i]-=M[i][j]*vect[j];
+				}
+			}
+			temp[i]/=M[i][i];
+		}
+		for (int i=0; i<N; i++){
+			vectres[i]=temp[i];
+		}
+	}
+	return 1;
+}
+
+
 
 
 int main(){
 	InitData();
+        //ComprovaciÓ A
+	printf("V1 del 0 al 9 y del 256 al 265:\n"); 
+        for (int i = 0; i < 10; i++) {
+	   printf("%f",V1[i]);
+	}
+printf("\n");
 
+        for (int i=256; i<266; i++){
+		printf("%f",V1[i]);
+	}
+	printf("\n");
+
+	printf("V2 del 0 al 9 y del 256 al 265:\n");
+	for (int i = 0; i < 10; i++) { 
+		 printf("%f",V2[i]);
+	}
+	printf("\n");
+	for (int i=256; i<266; i++){ 
+		 printf("%f",V2[i]);
+	}
+	printf("\n"); 
+	printf("V3 del 0 al 9 y del 256 al 265:\n");
+	for (int i = 0; i < 10; i++) {
+		 printf("%f",V3[i]);
+	}
+	printf("\n");
+	 for (int i=256; i<266; i++){
+	         printf("%f",V3[i]);
+	 } 
+        printf("\n");
+	//Comprovació B
+
+        printf("Mat fila 0 i fila 100 del 0 al 9:\n");
+	printf("Fila 0:\n");
+	for (int j = 0; j < 10; j++) {
+		  printf("%f ", Mat[0][j]);
+	 }
+	printf("\n");
+        printf("Fila 100:\n");
+	for (int j = 0; j < 10; j++) {
+		  printf("%f ", Mat[100][j]);
+			    }
+	    printf("\n");
 	
+
+	//Comprovació C
+	printf("MatDD fila 0 del 0 al 9 i fila 100 del 90 a 99:\n");
+	printf("Fila 0:\n");
+	for (int j = 0; j < 10; j++) {
+		printf("%f ", MatDD[0][j]);
+			    }
+        printf("\n");
+	printf("Fila 100:\n");
+        for (int j = 90; j < 100; j++) {
+                printf("%f ", MatDD[100][j - 95]);
+				    }
+		    printf("\n");
+        //Comprovació D
+	printf("Infininorma de Mat = %f\n", Infininorm(Mat));
+	printf("Norma ú de Mat = %f\n", Onenorm(Mat));
+	printf("Norma de Frobenius de Mat = %f\n", NormFrobenius(Mat));
+	printf("La matriu Mat %s diagonal dominant\n", DiagonalDom(Mat) ? "és" : "no és");
+	//Comprovació E
+	float escalarV1V2 = Scalar(V1, V2);
+	float escalarV1V3 = Scalar(V1, V3);
+	float escalarV2V3 = Scalar(V2, V3);
+	printf("Escalar <V1, V2> = %f\n", Scalar(V1, V2));
+	printf("Escalar <V1, V3> = %f\n",  Scalar(V1, V3));
+	printf("Escalar <V2, V3> = %f\n", Scalar(V2, V3));
+	//Comprovació F
+	printf("Magnitud V1,V2 i V3 = %f %f %f\n", Magnitude(V1), Magnitude(V2), Magnitude(V3));
+	//Comprovació G
+	if(Ortogonal(V1,V2)){
+		printf("V1 i V2 són ortogonals\n");
+	}
 	
-	return 0;
+        return 0;
 }
+
 
 
 
