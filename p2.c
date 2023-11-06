@@ -49,8 +49,10 @@ void PrintRow( float mat[N][N], int row, int from, int numel ){
 void MultEscalar( float vect[N], float vectres[N], float alfa ){
 	for (int i=0; i<N; i++){
 		vectres[i]= alfa * vect[i];
-		printf("%f ",vectres[i]);
+		 
 	}
+		
+	
 }
 
 float Scalar( float vect1[N], float vect2[N] ){
@@ -145,19 +147,25 @@ int DiagonalDom( float M[N][N] ){
 	}
 		return 1;
 }
-int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned iter ){
+int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned int iter ){
+	if (!DiagonalDom(M)) {
+	printf("La matriu M no és diagonal dominant, no es pot aplicar Jacobi\n");
+	return 0;
+		    }
 	float temp[N];
-	unsigned k;
+	unsigned int k;
 	for (k=0; k< iter;k++){
 		for (int i = 0; i < N; i++) {
 			temp[i]=vect[i];
 
 			for (int j=0; j<N; j++){
 				if (j!=i){
-               			temp[i]-=M[i][j]*vect[j];
+               			temp[i]-=M[i][j]*vectres[j];
 				}
+			
+			
 			}
-			temp[i]/=M[i][i];
+			temp[i] /=M[i][i];
 		}
 		for (int i=0; i<N; i++){
 			vectres[i]=temp[i];
@@ -174,31 +182,31 @@ int main(){
         //ComprovaciÓ A
 	printf("V1 del 0 al 9 y del 256 al 265:\n"); 
         for (int i = 0; i < 10; i++) {
-	   printf("%f",V1[i]);
+	   printf("%f ",V1[i]);
 	}
 printf("\n");
 
         for (int i=256; i<266; i++){
-		printf("%f",V1[i]);
+		printf("%f ",V1[i]);
 	}
 	printf("\n");
 
 	printf("V2 del 0 al 9 y del 256 al 265:\n");
 	for (int i = 0; i < 10; i++) { 
-		 printf("%f",V2[i]);
+		 printf("%f ",V2[i]);
 	}
 	printf("\n");
 	for (int i=256; i<266; i++){ 
-		 printf("%f",V2[i]);
+		 printf("%f ",V2[i]);
 	}
 	printf("\n"); 
 	printf("V3 del 0 al 9 y del 256 al 265:\n");
 	for (int i = 0; i < 10; i++) {
-		 printf("%f",V3[i]);
+		 printf("%f ",V3[i]);
 	}
 	printf("\n");
 	 for (int i=256; i<266; i++){
-	         printf("%f",V3[i]);
+	         printf("%f ",V3[i]);
 	 } 
         printf("\n");
 	//Comprovació B
@@ -217,15 +225,15 @@ printf("\n");
 	
 
 	//Comprovació C
-	printf("MatDD fila 0 del 0 al 9 i fila 100 del 90 a 99:\n");
+	printf("MatDD fila 0 del 0 al 9 i fila 100 del 95 a 104:\n");
 	printf("Fila 0:\n");
 	for (int j = 0; j < 10; j++) {
 		printf("%f ", MatDD[0][j]);
 			    }
         printf("\n");
 	printf("Fila 100:\n");
-        for (int j = 90; j < 100; j++) {
-                printf("%f ", MatDD[100][j - 95]);
+        for (int j = 95; j < 105; j++) {
+                printf("%f ", MatDD[100][j]);
 				    }
 		    printf("\n");
         //Comprovació D
@@ -233,6 +241,10 @@ printf("\n");
 	printf("Norma ú de Mat = %f\n", Onenorm(Mat));
 	printf("Norma de Frobenius de Mat = %f\n", NormFrobenius(Mat));
 	printf("La matriu Mat %s diagonal dominant\n", DiagonalDom(Mat) ? "és" : "no és");
+	printf("Infininorma de MatDD = %f\n", Infininorm(MatDD));
+	printf("Norma ú de MatDD = %f\n", Onenorm(MatDD));
+	printf("Norma de Frobenius de MatDD = %f\n", NormFrobenius(MatDD));
+     	printf("La matriu MatDD %s diagonal dominant\n", DiagonalDom(MatDD) ? "és" : "no és");
 	//Comprovació E
 	float escalarV1V2 = Scalar(V1, V2);
 	float escalarV1V3 = Scalar(V1, V3);
@@ -245,8 +257,62 @@ printf("\n");
 	//Comprovació G
 	if(Ortogonal(V1,V2)){
 		printf("V1 i V2 són ortogonals\n");
+
+	}else{
+		printf("V1 i V2 no són ortogonals\n");
 	}
+	if (Ortogonal(V1,V3)){
+		printf("V1 i V3 són ortogonals\n");
+	}else{
+		               
+	       }	printf("V1 i V3 no són ortogonals\n");
+	if(Ortogonal(V2,V3)){
+		printf("V1 i V3 no són ortogonals\n");
+	}else {
+		printf("V1 i V3 no són ortogonals\n");
+         }
+	//comprovació H
 	
+	MultEscalar(V3,V1,2);
+        printf("Elements 0 al 9 i 256 al 265 del resultat de multiplicar V3x2.0 són:\n");
+        for (int i = 0; i < 10; i++) {
+		printf("%f ",V1[i]);
+	}
+	printf("\n");
+	
+	for (int i = 256; i <= 265; i++) {
+		printf("%f ", V1[i]);
+	}
+	printf("\n");
+        //comprovació I
+        Projection(V2,V3,V1);
+	printf("Els elements 0 a 9 del resultat de la projecció de V2 sobre V3 són:\n");
+	for (int i = 0; i < 10; i++) {
+		printf("%f ", V1[i]);
+	}
+	printf("\n");
+	Projection(V1,V2,V1);
+	printf("Els elements 0 a 9 del resultat de la projecció de V1 sobre V2 són:\n");
+	for (int i = 0; i < 10; i++) {
+		printf("%f ", V1[i]);
+	}
+	printf("\n");
+       //comprovació J
+
+        Jacobi(MatDD,V3,V4,1);
+	printf("Els elements 0 a 9 de la solució (1 iter) del sistema d'equacions són:\n");
+	for (int i = 0; i < 10; i++) {
+		 printf("%f ", V4[i]);
+			     }
+	printf("\n");
+	Jacobi(MatDD,V3,V4,1000);
+	printf("Els elements 0 a 9 de la solució (1000 iter) del sistema d'equacions són:\n");
+        for (int i = 0; i < 10; i++) { 
+		printf("%f ", V4[i]);
+	
+		    }
+	printf("\n");
+        Jacobi(Mat,V3,V4,1000);
         return 0;
 }
 
