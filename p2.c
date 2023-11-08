@@ -173,6 +173,28 @@ int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned int iter )
 	}
 	return 1;
 }
+//Punt extra
+float NormaRelativaResidu(float M[N][N], float vect[N], float vector[N]) {
+	    float residu[N];
+	     float norma_residu = 0.0;
+	      float norma_b = 0.0;
+	      for (int i = 0; i < N; i++) {
+		      residu[i] = 0.0;
+		      for (int j = 0; j < N; j++) {
+			      residu[i] += M[i][j] * vect[j];
+		      }
+		      residu[i] -= vector[i];
+	      }
+	      for (int i = 0; i < N; i++) {
+		      norma_residu += residu[i] * residu[i];
+		      norma_b += vector[i] * vector[i];
+	      }
+	      float norma_relativa = sqrt(norma_residu) / sqrt(norma_b);
+	      return norma_relativa;
+}
+
+
+
 
 
 
@@ -304,6 +326,11 @@ printf("\n");
 	for (int i = 0; i < 10; i++) {
 		 printf("%f ", V4[i]);
 			     }
+        //punt extra
+	float norma_relativa_residu = NormaRelativaResidu(MatDD, V4, V3);
+	printf("Norma Relativa del Residu: %f\n", norma_relativa_residu);
+
+
 	printf("\n");
 	Jacobi(MatDD,V3,V4,1000);
 	printf("Els elements 0 a 9 de la solució (1000 iter) del sistema d'equacions són:\n");
@@ -313,9 +340,21 @@ printf("\n");
 		    }
 	printf("\n");
         Jacobi(Mat,V3,V4,1000);
+
+
+
+        //Punt extra
+        
+        
+	printf("Norma Relativa del Residu: %f\n",NormaRelativaResidu(MatDD, V4, V3));
+  
+	 
+
+
+
+
         return 0;
 }
-
 
 
 
