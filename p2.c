@@ -363,12 +363,6 @@ printf("\n");
 	for (int i = 0; i < 10; i++) {
 		 printf("%f ", V4[i]);
 			     }
-	
-        //Punt extra
-	float norma_relativa_residu = NormaRelativaResidu(MatDD, V4, V3);
-	printf("Norma Relativa del Residu: %f\n", norma_relativa_residu);
-
-
 	printf("\n");
 	Jacobi(MatDD,V3,V4,1000);
 	printf("Els elements 0 a 9 de la solució (1000 iter) del sistema d'equacions són:\n");
@@ -378,10 +372,10 @@ printf("\n");
 		    }
 	printf("\n");
         Jacobi(Mat,V3,V4,1000);
-
-
-
+	
         //Punt extra
+	float norma_relativa_residu = NormaRelativaResidu(MatDD, V4, V3);
+	printf("Norma Relativa del Residu: %f\n", norma_relativa_residu);
         
         
 	printf("Norma Relativa del Residu: %f\n",NormaRelativaResidu(MatDD, V4, V3));
