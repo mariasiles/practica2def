@@ -69,6 +69,8 @@ float Scalar( float vect1[N], float vect2[N] ){
 	return resultat;
 }
 
+
+//definim una funció per calcular la magnitud d'un vector seguint la formula on es fa l'arrel quadrada de la multiplicació de cada element de vect.
 float Magnitude( float vect[N] ){
 	int i;
 	float result=0.0;
@@ -80,17 +82,23 @@ float Magnitude( float vect[N] ){
 } 
 
 
-
+//definim una funció per determinar si dos vectors són ortogonals, és a dir el seu Scalar dona com a resultat 0.
 int Ortogonal( float vect1[N], float vect2[N] ){
 	
 	return (Scalar(vect1,vect2) == 0);
 }
+
+
+//definim una funció on es calcula la projecció seguint la formula. Es calcula Scalar entre vect1 i vect2, el resultat es divideix per la Magintude de vect2 i es fa la MultEscalar de vect2 per projecció.
 void Projection( float vect1[N], float vect2[N], float vectres[N] ){
 	float scalar=Scalar(vect1,vect2);
 	float magnitude=Magnitude(vect2);
 	float projeccio=scalar / magnitude;
 	MultEscalar(vect2,vectres,projeccio);
 }
+
+
+//
 float Infininorm( float M[N][N] ){
 	float maxsum=0.0;
 	for (int i=0; i<N; i++){
