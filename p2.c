@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #define N 512
+//definim les matrius i els vectors
 float Mat[N][N];
 float MatDD[N][N];
 float V1[N];
@@ -166,7 +167,7 @@ int DiagonalDom( float M[N][N] ){
 }
 
 
-//definim una funció que resol el sistema d'equacions, la matriu ha de ser diagonal dominant
+//definim una funció que resol el sistema d'equacions mitjançant Jacobi, la matriu ha de ser diagonal dominant
 int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned int iter ){
 	if (!DiagonalDom(M)) { //cridar DiagonalDom per saber si la matriu és dominant
 	printf("La matriu M no és diagonal dominant, no es pot aplicar Jacobi\n");
@@ -174,21 +175,21 @@ int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned int iter )
 		    }
 	float temp[N]; //vector
 	unsigned int k; //variable que utilitzem com a comptador
-	for (k=0; k< iter;k++){
+	for (k=0; k< iter;k++){ //bucle segons iter
 		for (int i = 0; i < N; i++) {
-			temp[i]=vect[i];
+			temp[i]=vect[i]; //copiem el valor de la posició corresponent a i de vect a al vector temp
 
-			for (int j=0; j<N; j++){
-				if (j!=i){
+			for (int j=0; j<N; j++){ //bucle càlcul dels valors del vector
+				if (j!=i){ //quan j és diferent de i s'actualitza el valor del vector multiplicant la posició ij de la matriu per la posició j de vectres
                			temp[i]-=M[i][j]*vectres[j];
 				}
 			
 			
 			}
-			temp[i] /=M[i][i];
+			temp[i] /=M[i][i]; //divisió del vector temp entre l'element de la diagonal corresponent a cada bucle 
 		}
 		for (int i=0; i<N; i++){
-			vectres[i]=temp[i];
+			vectres[i]=temp[i]; //es copien els valors obtinguts en el mètode Jacobi del vector temp a vectres
 		}
 	}
 	return 1;
@@ -223,7 +224,8 @@ float NormaRelativaResidu(float M[N][N], float vect[N], float vector[N]) {
 
 int main(){
 	InitData();
-        //ComprovaciÓ A
+	
+        //Comprovació A
 	printf("V1 del 0 al 9 y del 256 al 265:\n"); 
         for (int i = 0; i < 10; i++) {
 	   printf("%f ",V1[i]);
@@ -253,8 +255,9 @@ printf("\n");
 	         printf("%f ",V3[i]);
 	 } 
         printf("\n");
-	//Comprovació B
 
+	
+	//Comprovació B
         printf("Mat fila 0 i fila 100 del 0 al 9:\n");
 	printf("Fila 0:\n");
 	for (int j = 0; j < 10; j++) {
@@ -280,6 +283,8 @@ printf("\n");
                 printf("%f ", MatDD[100][j]);
 				    }
 		    printf("\n");
+
+	
         //Comprovació D
 	printf("Infininorma de Mat = %f\n", Infininorm(Mat));
 	printf("Norma ú de Mat = %f\n", Onenorm(Mat));
@@ -289,6 +294,8 @@ printf("\n");
 	printf("Norma ú de MatDD = %f\n", Onenorm(MatDD));
 	printf("Norma de Frobenius de MatDD = %f\n", NormFrobenius(MatDD));
      	printf("La matriu MatDD %s diagonal dominant\n", DiagonalDom(MatDD) ? "és" : "no és");
+	
+	
 	//Comprovació E
 	float escalarV1V2 = Scalar(V1, V2);
 	float escalarV1V3 = Scalar(V1, V3);
@@ -296,8 +303,12 @@ printf("\n");
 	printf("Escalar <V1, V2> = %f\n", Scalar(V1, V2));
 	printf("Escalar <V1, V3> = %f\n",  Scalar(V1, V3));
 	printf("Escalar <V2, V3> = %f\n", Scalar(V2, V3));
+	
+	
 	//Comprovació F
 	printf("Magnitud V1,V2 i V3 = %f %f %f\n", Magnitude(V1), Magnitude(V2), Magnitude(V3));
+	
+	
 	//Comprovació G
 	if(Ortogonal(V1,V2)){
 		printf("V1 i V2 són ortogonals\n");
@@ -315,8 +326,9 @@ printf("\n");
 	}else {
 		printf("V1 i V3 no són ortogonals\n");
          }
-	//comprovació H
 	
+	
+	//Comprovació H
 	MultEscalar(V3,V1,2);
         printf("Elements 0 al 9 i 256 al 265 del resultat de multiplicar V3x2.0 són:\n");
         for (int i = 0; i < 10; i++) {
@@ -328,7 +340,9 @@ printf("\n");
 		printf("%f ", V1[i]);
 	}
 	printf("\n");
-        //comprovació I
+
+	
+        //Comprovació I
         Projection(V2,V3,V1);
 	printf("Els elements 0 a 9 del resultat de la projecció de V2 sobre V3 són:\n");
 	for (int i = 0; i < 10; i++) {
@@ -341,14 +355,16 @@ printf("\n");
 		printf("%f ", V1[i]);
 	}
 	printf("\n");
-       //comprovació J
 
+	
+       //Comprovació J
         Jacobi(MatDD,V3,V4,1);
 	printf("Els elements 0 a 9 de la solució (1 iter) del sistema d'equacions són:\n");
 	for (int i = 0; i < 10; i++) {
 		 printf("%f ", V4[i]);
 			     }
-        //punt extra
+	
+        //Punt extra
 	float norma_relativa_residu = NormaRelativaResidu(MatDD, V4, V3);
 	printf("Norma Relativa del Residu: %f\n", norma_relativa_residu);
 
