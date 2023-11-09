@@ -166,13 +166,14 @@ int DiagonalDom( float M[N][N] ){
 }
 
 
+//definim una funció que resol el sistema d'equacions, la matriu ha de ser diagonal dominant
 int Jacobi( float M[N][N] , float vect[N], float vectres[N], unsigned int iter ){
-	if (!DiagonalDom(M)) {
+	if (!DiagonalDom(M)) { //cridar DiagonalDom per saber si la matriu és dominant
 	printf("La matriu M no és diagonal dominant, no es pot aplicar Jacobi\n");
 	return 0;
 		    }
-	float temp[N];
-	unsigned int k;
+	float temp[N]; //vector
+	unsigned int k; //variable que utilitzem com a comptador
 	for (k=0; k< iter;k++){
 		for (int i = 0; i < N; i++) {
 			temp[i]=vect[i];
