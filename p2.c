@@ -98,13 +98,13 @@ void Projection( float vect1[N], float vect2[N], float vectres[N] ){
 }
 
 
-//
+//definim una funció que ens dona el màxim de les sumes dels valors absoluts de cada fila.
 float Infininorm( float M[N][N] ){
-	float maxsum=0.0;
+	float maxsum=0.0; //variable que emmagatzema el màxim
 	for (int i=0; i<N; i++){
-		float sumaFila=0.0;
+		float sumaFila=0.0; //variable que emmagatzema la suma de la fila
 		for (int j=0; j<N; j++){
-			sumaFila+=fabs(M[i][j]);
+			sumaFila+=fabs(M[i][j]); //fabs és el valor absolut de la posició i j de la matriu
 		}
 		if (sumaFila>maxsum){
 			maxsum=sumaFila;
@@ -113,10 +113,13 @@ float Infininorm( float M[N][N] ){
 	
 	return maxsum;
 }
+
+
+//definim una funció que retorna el màxim de les sumes dels valors absoluts de cada columna, funciona igual que Infininorm
 float Onenorm( float M[N][N] ){
-	float maxsum=0.0;
+	float maxsum=0.0; //variable que emmagatzema el màxim
 	for (int j=0; j<N; j++){
-		float sumaColumna=0.0;
+		float sumaColumna=0.0; //variable que emmagatzema la suma de la columna
 		for (int i=0; i<N; i++){
 			sumaColumna+=fabs(M[i][j]);
 		}
@@ -128,11 +131,13 @@ float Onenorm( float M[N][N] ){
 	return maxsum;
 }
 
+
+//definim una funció que retorna el resultat de l'arrel quadrada de la suma de tots els elements de la matriu al quadrat.
 float NormFrobenius( float M[N][N] ){
-	float suma=0.0;
+	float suma=0.0; //variable que emmagatzema la suma
 	for (int i=0; i<N; i++){
 		for (int j=0; j<N; j++){
-			suma+= M[i][j] * M[i][j];
+			suma+= M[i][j] * M[i][j]; //obtenim element al quadrat i l'afegim a la suma
 		}
 	}
 	float frobenius=sqrt(suma);
@@ -142,22 +147,22 @@ float NormFrobenius( float M[N][N] ){
 
 
 
-
+//definim una funció que retorna 1 o 0 segons si una matriu es diagonal dominant.
 int DiagonalDom( float M[N][N] ){
 	for (int i=0; i<N; i++){
-		float diagonal = fabs(M[i][i]);
-	        float sumaFila = 0.0;
+		float diagonal = fabs(M[i][i]); //valor absolut de l'element de la diagonal
+	        float sumaFila = 0.0; //variable que emmagatzema la suma dels elements de la fila menys el diagonal
 		
 		for (int j=0; j<N; j++){
-			if (j!=i){
-				sumaFila+= fabs(M[i][j]);
+			if (j!=i){ //quan j no és igual a i, és a dir no és l'element de la diagonal.
+				sumaFila+= fabs(M[i][j]); //sumem l'element a la variable de la suma
 			}
 		}
 		if (diagonal < sumaFila){
-			return 0;
+			return 0; //es retorna 0 quan no és dominant
 		}
 	}
-		return 1;
+		return 1; //es retorna 1 quan és dominant
 }
 
 
