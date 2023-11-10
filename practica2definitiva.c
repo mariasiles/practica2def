@@ -339,7 +339,7 @@ printf("\n");
 	printf("Norma Relativa del Residu: %f\n", norma_relativa_residu);
         
 
-	//Comprovació J (1iter)
+	//Comprovació J (1000iter)
 
 	Jacobi(MatDD,V3,V4,1000);
 	printf("Els elements 0 a 9 de la solució (1000 iter) del sistema d'equacions són:\n");
